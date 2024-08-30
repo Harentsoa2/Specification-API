@@ -1,0 +1,136 @@
+openapi: 3.0.3
+info:
+  title: STD23026-TD1
+  version: 1.0.0
+servers:
+  - url: 'http://localhost.std23026.com'
+paths:
+  /customers:
+    get:
+      tags:
+        - User
+      summary: Get all customers
+      operationId: getAllCustomers
+      parameters:
+        - name: page
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: The page number to retrieve.
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: The number of customers per page.
+      responses:
+        '200':
+          description: A list of customers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+        '400':
+          description: Invalid request parameters
+    post:
+      tags:
+        - User
+      summary: Create customers
+      operationId: createCustomers
+      requestBody:
+        required: true
+        description: A list of customers without IDs
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CreateCustomer'
+      responses:
+        '201':
+          description: Customers created successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+        '400':
+          description: Invalid request body
+    put:
+      tags:
+        - User
+      summary: Update customers
+      operationId: updateCustomers
+      requestBody:
+        required: true
+        description: A list of customers with IDs
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Customer'
+      responses:
+        '200':
+          description: Customers updated successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+        '400':
+          description: Invalid request body
+    delete:
+      tags:
+        - User
+      summary: Delete customers
+      operationId: deleteCustomers
+      requestBody:
+        required: true
+        description: A list of customer IDs
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomerId'
+      responses:
+        '200':
+          description: Customers deleted successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+        '400':
+          description: Invalid request body
+
+components:
+  schemas:
+    Customer:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        age:
+          type: integer
+    CreateCustomer:
+      type: object
+      properties:
+        name:
+          type: string
+        age:
+          type: integer
+    CustomerId:
+      type: object
+      properties:
+        id:
+          type: string

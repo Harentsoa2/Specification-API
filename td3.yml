@@ -1,0 +1,137 @@
+openapi: 3.0.3
+info:
+  title: STD23026-TD1
+  version: 1.0.0
+servers:
+  - url: 'http://localhost.std23026.com'
+paths:
+  /meals:
+    get:
+      tags:
+        - Food
+      summary: get all meals
+      operationId: getAllMeals
+      parameters:
+        - name: page
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: The page number to retrieve 
+          
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: the number of meals per page.
+      responses:
+        '200':
+          description: A list of meals
+          content:
+
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meals'
+        '400':
+          description: Invalid request parameters  
+    post:
+      tags:
+        - Food
+      summary: Create meal
+      operationId: createMeal
+      requestBody:
+        required: true
+        description: A list of customers without IDs
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CreateMeals'
+      responses:
+        '201':
+          description: Meals created successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meals'
+        '400':
+          description: Invalid request body
+    put:
+      tags:
+        - Food
+      summary: Update Meals
+      operationId: updateMeals
+      requestBody:
+        required: true
+        description: A list of meals with IDs
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Meals'
+      responses:
+        '200':
+          description: Customers updated successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meals'
+        '400':
+          description: Invalid request body
+    delete:
+      tags:
+        - Food
+      summary: Delete meals
+      operationId: deleteMeals
+      requestBody:
+        required: true
+        description: A list of customer IDs
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/MealsId'
+      responses:
+        '200':
+          description: Customers deleted successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meals'
+        '400':
+          description: Invalid request body
+components:
+  schemas:
+    Meals:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        price:
+          type: integer
+    CreateMeals:
+      type: object
+      properties:
+        name:
+          type: string
+        price:
+          type: integer
+    MealsId:
+      type: object
+      properties:
+        id:
+          type: string

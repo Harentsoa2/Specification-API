@@ -1,0 +1,377 @@
+openapi: 3.0.3
+info:
+  title: STD23026-TD1
+  version: 1.0.0
+servers:
+  - url: 'http://localhost.std23026.com'
+paths:
+  /meals:
+    get:
+      tags:
+        - Food
+      summary: Get all meals
+      operationId: getAllMeals
+      parameters:
+        - name: page
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: The page number to retrieve 
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: The number of meals per page.
+      responses:
+        '200':
+          description: A list of meals
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meal'
+        '400':
+          description: Invalid request parameters  
+    post:
+      tags:
+        - Food
+      summary: Create meals
+      operationId: createMeal
+      requestBody:
+        required: true
+        description: A list of meals to create
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CreateMeal'
+      responses:
+        '201':
+          description: Meals created successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meal'
+        '400':
+          description: Invalid request body
+    put:
+      tags:
+        - Food
+      summary: Update meals
+      operationId: updateMeals
+      requestBody:
+        required: true
+        description: A list of meals with IDs to update
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Meal'
+      responses:
+        '200':
+          description: Meals updated successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meal'
+        '400':
+          description: Invalid request body
+    delete:
+      tags:
+        - Food
+      summary: Delete meals
+      operationId: deleteMeals
+      requestBody:
+        required: true
+        description: A list of meal IDs to delete
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/MealId'
+      responses:
+        '200':
+          description: Meals deleted successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meal'
+        '400':
+          description: Invalid request body
+
+  /customers:
+    get:
+      tags:
+        - User
+      summary: Get all customers
+      operationId: getAllCustomers
+      parameters:
+        - name: page
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: The page number to retrieve.
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: The number of customers per page.
+      responses:
+        '200':
+          description: A list of customers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+        '400':
+          description: Invalid request parameters
+    post:
+      tags:
+        - User
+      summary: Create customers
+      operationId: createCustomers
+      requestBody:
+        required: true
+        description: A list of customers without IDs
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CreateCustomer'
+      responses:
+        '201':
+          description: Customers created successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+        '400':
+          description: Invalid request body
+    put:
+      tags:
+        - User
+      summary: Update customers
+      operationId: updateCustomers
+      requestBody:
+        required: true
+        description: A list of customers with IDs
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Customer'
+      responses:
+        '200':
+          description: Customers updated successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+        '400':
+          description: Invalid request body
+    delete:
+      tags:
+        - User
+      summary: Delete customers
+      operationId: deleteCustomers
+      requestBody:
+        required: true
+        description: A list of customer IDs
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomerId'
+      responses:
+        '200':
+          description: Customers deleted successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+        '400':
+          description: Invalid request body
+
+  /customers/{customerId}/orders:
+    get:
+      tags:
+        - Order
+      summary: Get all orders for a specific customer
+      operationId: getCustomerOrders
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the customer
+      responses:
+        '200':
+          description: A list of orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        '400':
+          description: Invalid request parameters
+    post:
+      tags:
+        - Order
+      summary: Create an order for a specific customer
+      operationId: createCustomerOrder
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the customer
+      requestBody:
+        required: true
+        description: An order to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrder'
+      responses:
+        '201':
+          description: Order created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: Invalid request body
+    put:
+      tags:
+        - Order
+      summary: Update an order for a specific customer
+      operationId: updateCustomerOrder
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the customer
+      requestBody:
+        required: true
+        description: An order with ID to update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+      responses:
+        '200':
+          description: Order updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: Invalid request body
+
+components:
+  schemas:
+    Meal:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        price:
+          type: integer
+    CreateMeal:
+      type: object
+      properties:
+        name:
+          type: string
+        price:
+          type: integer
+    MealId:
+      type: object
+      properties:
+        id:
+          type: string
+    Customer:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        age:
+          type: integer
+    CreateCustomer:
+      type: object
+      properties:
+        name:
+          type: string
+        age:
+          type: integer
+    CustomerId:
+      type: object
+      properties:
+        id:
+          type: string
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+        reference:
+          type: string
+        meals:
+          type: array
+          items:
+            type: object
+            properties:
+              meal:
+                $ref: '#/components/schemas/Meal'
+              quantity:
+                type: integer
+        orderDatetime:
+          type: string
+          format: date-time
+    CreateOrder:
+      type: object
+      properties:
+        reference:
+          type: string
+        meals:
+          type: array
+          items:
+            type: object
+            properties:
+              mealId:
+                type: string
+              quantity:
+                type: integer
